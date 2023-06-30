@@ -3,10 +3,6 @@ import React, {useEffect, useState} from "react";
 
 import axios from 'axios';
 import Navbar from "@/app/components/navbar";
-import styles from "../spotifyApi/page.module.css"
-
-
-
 
 const Page = () => {
   const CLIENT_ID = "fb337f28fd9f4dcfb2430b7210766eab"
@@ -66,10 +62,10 @@ const renderArtists = () => {
 }
 
   return (
-    <main>
+    <main className="flex w-full flex-col items.center justify-center">
         <Navbar />
-    <div className={styles.page}>
-        <header className={styles.page.header}>
+    <div className="p-4 bg-slate-800 h-screen text-white text-center">
+        <header>
             <h1>Spotify Next</h1>
         {!token ?
             <a href={`${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}`}>Login
@@ -78,7 +74,7 @@ const renderArtists = () => {
 
         {token ?
             <form onSubmit={searchArtists}>
-                <input className={styles.setSearchKey} type="text" onChange={e => setSearchKey(e.target.value)}/>
+                <input className="border border-2 border-black" type="text" onChange={e => setSearchKey(e.target.value)}/>
                 <button type={"submit"}>Search</button>
             </form>
 
