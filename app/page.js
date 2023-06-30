@@ -1,7 +1,7 @@
 import { Poppins } from 'next/font/google'
-import Hero from '../components/Hero'
-import Navbar from '@/components/navbar';
-import styles from '../components/styles/navbar.module.css'
+import Hero from './components/Hero'
+import Navbar from '@/app/components/navbar';
+import styles from '../app/components/styles/navbar.module.css'
 
 const poppins = Poppins({
   subsets: ['latin'],

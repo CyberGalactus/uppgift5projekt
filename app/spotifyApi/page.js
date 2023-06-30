@@ -2,8 +2,8 @@
 import React, {useEffect, useState} from "react";
 
 import axios from 'axios';
-import Navbar from "@/components/navbar";
-import styles from "./page.module.css"
+import Navbar from "@/app/components/navbar";
+import styles from "../spotifyApi/page.module.css"
 
 
 
@@ -70,7 +70,7 @@ const renderArtists = () => {
         <Navbar />
     <div className={styles.page}>
         <header className={styles.page.header}>
-            <h1>Spotify React</h1>
+            <h1>Spotify Next</h1>
         {!token ?
             <a href={`${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}`}>Login
                 to Spotify</a>
@@ -78,7 +78,7 @@ const renderArtists = () => {
 
         {token ?
             <form onSubmit={searchArtists}>
-                <input type="text" onChange={e => setSearchKey(e.target.value)}/>
+                <input className={styles.setSearchKey} type="text" onChange={e => setSearchKey(e.target.value)}/>
                 <button type={"submit"}>Search</button>
             </form>
 

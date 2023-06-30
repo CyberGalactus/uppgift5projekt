@@ -16,10 +16,11 @@ const poppins = Poppins({
                 <nav className={styles.navbar}>
                     <Link href="/">
                         <Image
-                            src="/logo.jpg"
-                            alt="Logo"
+                            src="/Spotify_icon.svg.png"
                             width={500}
                             height={333}
+                            alt="Logo"
+                            priority={true} 
                             className={styles.logo}
                         />
                     </Link>

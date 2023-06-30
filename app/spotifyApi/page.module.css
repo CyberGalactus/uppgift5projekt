@@ -23,9 +23,9 @@
     font-size: calc(10px + 2vmin);
     color: rgb(144, 143, 143);
   }
-  
-  .App-link {
-    color: #61dafb;
+
+  .setSearchKey{
+    border: 2px solid black;
   }
   
   @keyframes App-logo-spin {
