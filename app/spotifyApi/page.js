@@ -74,7 +74,7 @@ const renderArtists = () => {
 
         {token ?
             <form onSubmit={searchArtists}>
-                <input className="border border-2 border-black" type="text" onChange={e => setSearchKey(e.target.value)}/>
+                <input className="border border-2 border-black text-black" type="text" onChange={e => setSearchKey(e.target.value)}/>
                 <button type={"submit"}>Search</button>
             </form>
 
