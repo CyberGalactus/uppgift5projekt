@@ -6,7 +6,8 @@ import Navbar from "@/app/components/navbar";
 
 const Page = () => {
   const CLIENT_ID = "fb337f28fd9f4dcfb2430b7210766eab"
-  const REDIRECT_URI = "https://uppgift5projekt.vercel.app/spotifyApi"
+//  const REDIRECT_URI = "https://uppgift5projekt.vercel.app/spotifyApi"
+  const REDIRECT_URI = "http://localhost:3000/spotifyApi/"
   const AUTH_ENDPOINT = "http://accounts.spotify.com/authorize"
   const RESPONSE_TYPE = "token"
 
@@ -18,19 +19,30 @@ const Page = () => {
     const hash = window.location.hash
     let token = window.localStorage.getItem("token")
 
-    // getToken()
-
- console.log({ token})
+    
+    console.log({ token})
     if (!token && hash) {
         token = hash.substring(1).split("&").find(elem => elem.startsWith("access_token")).split("=")[1]
-
+        
         window.location.hash = ""
         window.localStorage.setItem("token", token)
     }
-
+    
+    getToken()
     setToken(token)
 
 }, [])
+
+const getToken = async () => {
+    try {
+      const response = await axios.get(`${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}`); // Replace "/api/token" with your server endpoint that provides the token
+      const token = response.data.token;
+      setToken(token);
+    } catch (error) {
+      console.log("Error retrieving token:", error);
+    }
+  };
+
 
 const logout = () => {
     setToken("")
