@@ -6,7 +6,7 @@ import Navbar from "@/app/components/navbar";
 
 const Page = () => {
   const CLIENT_ID = "fb337f28fd9f4dcfb2430b7210766eab"
-  const REDIRECT_URI = "http://localhost:3000/spotifyApi/"
+  const REDIRECT_URI = "https://uppgift5projekt.vercel.app/spotifyApi"
   const AUTH_ENDPOINT = "http://accounts.spotify.com/authorize"
   const RESPONSE_TYPE = "token"
 
