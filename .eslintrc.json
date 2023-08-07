@@ -1,11 +1,10 @@
 {
   "root": true,
-  "extends": [
-    "next/core-web-vitals",
-    "eslint:recommended",
-    "prettier"
-  ],
+  "extends": ["next/core-web-vitals", "eslint:recommended", "prettier"],
   "rules": {
-    "no-unused-vars": ["warn", { "vars": "all", "args": "after-used", "ignoreRestSiblings": false }]
-}
+    "no-unused-vars": [
+      "warn",
+      { "vars": "all", "args": "after-used", "ignoreRestSiblings": false }
+    ]
+  }
 }

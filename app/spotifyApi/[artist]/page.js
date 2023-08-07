@@ -1,6 +1,6 @@
-const Page = ({params}) => {
-    const artist = params.artist
-  return <p>{artist}</p>
+const Page = ({ params }) => {
+  const artist = params.artist;
+  return <p>{artist}</p>;
 };
 
-export default Page; 
+export default Page;

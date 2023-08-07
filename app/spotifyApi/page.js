@@ -1,41 +1,45 @@
-"use client"
-import React, {useEffect, useState} from "react";
+"use client";
+import React, { useEffect, useState } from "react";
 
-import axios from 'axios';
+import axios from "axios";
 import Navbar from "@/app/components/navbar";
 
 const Page = () => {
-  const CLIENT_ID = "fb337f28fd9f4dcfb2430b7210766eab"
-//  const REDIRECT_URI = "https://uppgift5projekt.vercel.app/spotifyApi"
-  const REDIRECT_URI = "http://localhost:3000/spotifyApi/"
-  const AUTH_ENDPOINT = "http://accounts.spotify.com/authorize"
-  const RESPONSE_TYPE = "token"
+  const CLIENT_ID = "fb337f28fd9f4dcfb2430b7210766eab";
+  const REDIRECT_URI = "https://uppgift5projekt.vercel.app/spotifyApi"
+  //const REDIRECT_URI = "http://localhost:3000/spotifyApi/";
+  const AUTH_ENDPOINT = "http://accounts.spotify.com/authorize";
+  const RESPONSE_TYPE = "token";
 
-  const [token, setToken] = useState("")
-  const [searchKey, setSearchKey] = useState("")
-  const [artists, setArtists] = useState([])
+  const [token, setToken] = useState("");
+  const [searchKey, setSearchKey] = useState("");
+  const [artists, setArtists] = useState([]);
 
   useEffect(() => {
-    const hash = window.location.hash
-    let token = window.localStorage.getItem("token")
+    const hash = window.location.hash;
+    let token = window.localStorage.getItem("token");
+   // getToken(token);
 
-    
-    console.log({ token})
+    console.log({ token });
     if (!token && hash) {
-        token = hash.substring(1).split("&").find(elem => elem.startsWith("access_token")).split("=")[1]
-        
-        window.location.hash = ""
-        window.localStorage.setItem("token", token)
+      token = hash
+        .substring(1)
+        .split("&")
+        .find((elem) => elem.startsWith("access_token"))
+        .split("=")[1];
+
+      window.location.hash = "";
+      window.localStorage.setItem("token", token);
     }
-    
-    getToken()
+
     setToken(token)
+  }, []);
 
-}, [])
-
-const getToken = async () => {
+  const getToken = async () => {
     try {
-      const response = await axios.get(`${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}`); // Replace "/api/token" with your server endpoint that provides the token
+      const response = await axios.get(
+        `${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}`
+      ); // Replace "/api/token" with your server endpoint that provides the token
       const token = response.data.token;
       setToken(token);
     } catch (error) {
@@ -43,62 +47,73 @@ const getToken = async () => {
     }
   };
 
+  const logout = () => {
+    setToken("");
+    window.localStorage.removeItem("token");
+  };
 
-const logout = () => {
-    setToken("")
-    window.localStorage.removeItem("token")
-}
+  const searchArtists = async (e) => {
+    e.preventDefault();
+    const { data } = await axios.get("https://api.spotify.com/v1/search", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      params: {
+        q: searchKey,
+        type: "artist",
+      },
+    });
 
-const searchArtists = async (e) => {
-    e.preventDefault()
-    const {data} = await axios.get("https://api.spotify.com/v1/search", {
-        headers: {
-            Authorization: `Bearer ${token}`
-        },
-        params: {
-            q: searchKey,
-            type: "artist"
-        }
-    })
+    setArtists(data.artists.items);
+  };
 
-    setArtists(data.artists.items)
-}
-
-const renderArtists = () => {
-    return artists.map(artist => (
-        <div key={artist.id}>
-            {artist.images.length ? <img width={"100%"} src={artist.images[0].url} alt=""/> : <div>No Image</div>}
-            {artist.name}
-        </div>
-    ))
-}
+  const renderArtists = () => {
+    return artists.map((artist) => (
+      <div key={artist.id}>
+        {artist.images.length ? (
+          <img width={"100%"} src={artist.images[0].url} alt="" />
+        ) : (
+          <div>No Image</div>
+        )}
+        {artist.name}
+      </div>
+    ));
+  };
 
   return (
     <main className="flex w-full flex-col items.center justify-center">
-        <Navbar />
-    <div className="p-4 bg-slate-800 h-screen text-white text-center">
+      <Navbar />
+      <div className="p-4 bg-slate-800 h-screen text-white text-center">
         <header>
-            <h1>Spotify Next</h1>
-        {!token ?
-            <a href={`${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}`}>Login
-                to Spotify</a>
-            : <button onClick={logout}>Logout</button>}
+          <h1>Spotify Next</h1>
+          {!token ? (
+            <a
+              href={`${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}`}
+            >
+              Login to Spotify
+            </a>
+          ) : (
+            <button onClick={logout}>Logout</button>
+          )}
 
-        {token ?
+          {token ? (
             <form onSubmit={searchArtists}>
-                <input className="border border-2 border-black text-black" type="text" onChange={e => setSearchKey(e.target.value)}/>
-                <button type={"submit"}>Search</button>
+              <input
+                className="border border-2 border-black text-black"
+                type="text"
+                onChange={(e) => setSearchKey(e.target.value)}
+              />
+              <button type={"submit"}>Search</button>
             </form>
+          ) : (
+            <h2>Please login</h2>
+          )}
 
-            : <h2>Please login</h2>
-        }
-
-        {renderArtists()}
-
+          {renderArtists()}
         </header>
-    </div>
+      </div>
     </main>
   );
 };
 
-export default Page; 
+export default Page;
